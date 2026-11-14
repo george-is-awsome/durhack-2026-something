@@ -1,0 +1,19 @@
+
+Return a JSON object containing only exactly what is asked of you. I will store this as state and provide the user with your narrative. I will then send the state back to you along with their response, and you can decide how to change the state again. Please return the following:
+
+A narrative, being an introductory statement that is made up of a paragraph explaining the setting, a paragraph explaining the mission. Always end with a prompt for the player to do something. Limit this to 250 words. Describe the weather, environment, and destruction, as the protagonist is invadin' Earth. The theme for this game is {}, which {}
+
+A map, containing:
+- A tilemap anywhere between 5x5 to 15x15 tiles. Make the map shaped like a typical D&D dungeon. A tile can be a wall or empty space. Mark a wall as W, empty space as whitespace, and the player's position as X. Consider where the player would be able to see, for each till on the map that is not a wall, create a json structured list, treating the tile map as a 2d array, use each tile index as a key and create a placeholder json object to store information about what can be found there on the map.
+
+An opponent, specifying:
+- A normal attack, specifying description and damage on attack
+- A special attack, ditto
+- A secret ability on death, ditto
+- A name
+- A description to be read out in future
+- A health amount
+- A max health
+- An attack range
+
+A player, specifying the same as the opponent

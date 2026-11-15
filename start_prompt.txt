@@ -1,19 +1,46 @@
+Create a starting state for a sci-fi dungeon adventure in which the protagonist is invading Earth. Return only one valid JSON object, with no markdown or additional text, matching this exact structure:
 
-Return a JSON object containing only exactly what is asked of you. I will store this as state and provide the user with your narrative. I will then send the state back to you along with their response, and you can decide how to change the state again. Please return the following:
+{
+  "narrative": "Ash storms sweep across the shattered landing site. Broken towers flicker beneath a bruised sky as distant fires stain the horizon.\n\nYou have reached the outer ruins. Find a route toward the central command chamber and decide your next move.",
+  "goal": {
+    "description": "Reach the central command chamber.",
+    "target": {"x": 2, "y": 2}
+  },
+  "map": {
+    "grid": [
+      [null, null, {"name": "Room name", "desc": "Room description", "purpose": "How this room relates to the goal."}, null, null],
+      [null, {"name": "Room name", "desc": "Room description", "purpose": "How this room relates to the goal."}, {"name": "Room name", "desc": "Room description", "purpose": "How this room relates to the goal."}, {"name": "Room name", "desc": "Room description", "purpose": "How this room relates to the goal."}, null],
+      [null, null, {"name": "Central Command Chamber", "desc": "Room description", "purpose": "This is the goal destination."}, null, null],
+      [null, {"name": "Room name", "desc": "Room description", "purpose": "How this room relates to the goal."}, {"name": "Room name", "desc": "Room description", "purpose": "How this room relates to the goal."}, null, null],
+      [null, null, null, null, null]
+    ]
+  },
+  "player": {
+    "name": "Player name",
+    "hp": 85,
+    "max_hp": 100,
+    "attack": 14,
+    "attack_name": "Weapon name",
+    "x": 2,
+    "y": 0,
+    "inventory": ["Item name"]
+  }
+}
 
-A narrative, being an introductory statement that is made up of a paragraph explaining the setting, a paragraph explaining the mission. Always end with a prompt for the player to do something. Limit this to 250 words. Describe the weather, environment, and destruction, as the protagonist is invadin' Earth. The theme for this game is {}, which {}
-
-A map, containing:
-- A tilemap anywhere between 5x5 to 15x15 tiles. Make the map shaped like a typical D&D dungeon. A tile can be a wall or empty space. Mark a wall as W, empty space as whitespace, and the player's position as X. Consider where the player would be able to see, for each till on the map that is not a wall, create a json structured list, treating the tile map as a 2d array, use each tile index as a key and create a placeholder json object to store information about what can be found there on the map.
-
-An opponent, specifying:
-- A normal attack, specifying description and damage on attack
-- A special attack, ditto
-- A secret ability on death, ditto
-- A name
-- A description to be read out in future
-- A health amount
-- A max health
-- An attack range
-
-A player, specifying the same as the opponent
+Requirements:
+- Write the narrative as original in-world prose; never repeat these instructions, schema descriptions, or example wording.
+- The narrative must be exactly two short paragraphs separated by the JSON escape sequence \n\n. Paragraph one sets the scene; paragraph two gives the mission and ends with a question or clear prompt for the player.
+- Keep the narrative to 80 words or fewer so it fits the game view.
+- Include one overarching goal with a short, clear description and the zero-based coordinates of its destination room. The goal must be to reach that room, and it must differ from the player's starting room. The player can use any walkable route.
+- For reliability, make the grid exactly 5 rows by exactly 5 columns. Every row must contain exactly 5 cells, including null cells. Do not add or omit cells in any row.
+- The map grid must be rectangular, between 5 and 15 rows and between 5 and 15 columns.
+- Each grid cell must be null for a wall or an object with exactly "name", "desc", and "purpose" string fields for a walkable room.
+- Make the walkable rooms form a connected, dungeon-like layout with sensible corridors and rooms.
+- Every walkable room must have a concise purpose that explains how the room helps, guides, or contextualizes the goal. The goal room's purpose must make clear that it is the destination. Keep descriptions and purposes brief enough to fit the game view.
+- Describe only the rooms' visible atmosphere and architecture. Do not claim a room contains enemies, loot, clues, supplies, or interactive objects; those are not represented in the current game state.
+- Do not describe enemies, combat encounters, or carried items in the narrative unless those are present in the returned player data.
+- Player coordinates are zero-based, with x as the column and y as the row. They must point to a walkable room, not null.
+- The player must have non-empty name and attack_name strings, integer hp, max_hp, attack, x, and y values, and an inventory array of strings.
+- max_hp must be positive, hp must be between zero and max_hp, and attack must not be negative.
+- Include exactly the top-level keys "narrative", "goal", "map", and "player". Do not include an opponent.
+- Return only valid JSON: use double quotes for all keys and strings, and no comments or trailing commas.
